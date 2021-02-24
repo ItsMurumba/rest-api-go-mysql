@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	_ "github.com/go-sql-driver/mysql"
+	_"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
+// Post struct definition
 type Post struct{
 	ID string `json:"id"`
 	Title string `json:"title"`
@@ -20,7 +20,7 @@ var db *sql.DB
 var err error
 
 func main()  {
-	db, err := sql.Open("mysql", "root:Nomzano100%@tcp(127.0.0.1:3306)/rest-api-go")
+	db, err = sql.Open("mysql", "root:Nomzano100%@tcp(127.0.0.1:3306)/rest-api-go")
 
 	if err != nil {
         panic(err.Error())
@@ -31,7 +31,7 @@ func main()  {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/posts", getPosts).Methods("GET")
-	router.HandleFunc("/posts", createPosts).Methods("POST")
+	router.HandleFunc("/posts", createPost).Methods("POST")
 	router.HandleFunc("/posts/{id}", getPost).Methods("GET")
 	router.HandleFunc("/posts/{id}", updatePost).Methods("PUT")
 	router.HandleFunc("/posts/{id}", deletePost).Methods("DELETE")
@@ -63,7 +63,7 @@ func getPosts(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(posts)
 }
 
-func createPosts(w http.ResponseWriter, r *http.Request)  {
+func createPost(w http.ResponseWriter, r *http.Request)  {
 	stmt, err := db.Prepare("INSERT INTO posts(title) VALUES(?)")
 	if err != nil {
 		panic(err.Error())
