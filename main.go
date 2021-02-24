@@ -107,7 +107,6 @@ func getPost(w http.ResponseWriter, r *http.Request)  {
 	}
 
 	json.NewEncoder(w).Encode(post)
-	
 }
 
 func updatePost(w http.ResponseWriter, r *http.Request)  {
